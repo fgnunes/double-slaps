@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dual Countdown</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: white;
+
+      /* Background image */
+      background: url("fh6_back.jpg") no-repeat center center fixed;
+      background-size: cover;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* Dark overlay for readability */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .timer-box {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(6px);
+
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+
+      box-shadow: 0 0 25px rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    h2 {
+      margin: 0 0 20px;
+      font-size: 2rem;
+      letter-spacing: 1px;
+    }
+
+    .time {
+      font-size: 3.5rem;
+      font-weight: bold;
+      line-height: 1.3;
+      text-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    @media (max-width: 600px) {
+      .time {
+        font-size: 2rem;
+      }
+
+      .timer-box {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="timer-box">
+    <h2>Early/Advanced Access Release</h2>
+    <div class="time" id="countdown1"></div>
+  </div>
+
+  <div class="timer-box">
+    <h2>Release CountDown</h2>
+    <div class="time" id="countdown2"></div>
+  </div>
+
+</div>
+
+<script>
+  // Target dates
+  const target1 = new Date("May 15, 2026 00:00:00").getTime();
+  const target2 = new Date("May 19, 2026 00:00:00").getTime();
+
+  function updateCountdown(targetDate, elementId) {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if (distance <= 0) {
+      document.getElementById(elementId).innerHTML = "00d 00h 00m 00s";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById(elementId).innerHTML =
+      `${String(days).padStart(2, '0')}d ` +
+      `${String(hours).padStart(2, '0')}h ` +
+      `${String(minutes).padStart(2, '0')}m ` +
+      `${String(seconds).padStart(2, '0')}s`;
+  }
+
+  function refreshCountdowns() {
+    updateCountdown(target1, "countdown1");
+    updateCountdown(target2, "countdown2");
+  }
+
+  // Initial update
+  refreshCountdowns();
+
+  // Update every second
+  setInterval(refreshCountdowns, 1000);
+</script>
+
+</body>
+</html>
